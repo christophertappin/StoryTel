@@ -84,12 +84,105 @@ class RestControllerTests: XCTestCase {
                                                                               name: "Joe Barrett")],
                                                          cover: Cover(url: "https://www.storytel.se/images/9781482956436/640x640/cover.jpg", width: 640, height: 640) )])
         
+        var restResult: Result<SearchRequest.ResponseType, RestError>?
+        
         let restController = RestController(session: restUrlSessionMock)
         restController.send(SearchRequest(query: "harry"), completionHandler: { result in
             
-            XCTAssertEqual(result, Result<SearchRequest.ResponseType, RestError>.success(searchResult))
+            restResult = result
         })
         
+        XCTAssertEqual(restResult, Result<SearchRequest.ResponseType, RestError>.success(searchResult))
+        
+    }
+    
+    func testFailureResponseBadRequest() {
+        let restUrlSessionMock = RestURLSessionMock()
+        
+        let response = HTTPURLResponse(url: URL(string: "https://https://www.storytel.se")!, statusCode: 400, httpVersion: nil, headerFields: nil)
+        
+        restUrlSessionMock.response = response
+        
+        var restResult: Result<SearchRequest.ResponseType, RestError>?
+        
+        let restController = RestController(session: restUrlSessionMock)
+        restController.send(SearchRequest(query: "harry")) { result in
+            restResult = result
+        }
+        
+        XCTAssertEqual(restResult, Result<SearchRequest.ResponseType, RestError>.failure(.badRequest))
+    }
+    
+    func testFailureResponseNotFound() {
+        let restUrlSessionMock = RestURLSessionMock()
+        
+        let response = HTTPURLResponse(url: URL(string: "https://https://www.storytel.se")!, statusCode: 404, httpVersion: nil, headerFields: nil)
+        
+        restUrlSessionMock.response = response
+        
+        var restResult: Result<SearchRequest.ResponseType, RestError>?
+        
+        let restController = RestController(session: restUrlSessionMock)
+        restController.send(SearchRequest(query: "harry")) { result in
+            restResult = result
+        }
+        
+        XCTAssertEqual(restResult, Result<SearchRequest.ResponseType, RestError>.failure(.notFound))
+    }
+
+    func testFailureResponseOther() {
+        let restUrlSessionMock = RestURLSessionMock()
+        
+        let response = HTTPURLResponse(url: URL(string: "https://https://www.storytel.se")!, statusCode: 500, httpVersion: nil, headerFields: nil)
+        
+        restUrlSessionMock.response = response
+        
+        var restResult: Result<SearchRequest.ResponseType, RestError>?
+        
+        let restController = RestController(session: restUrlSessionMock)
+        restController.send(SearchRequest(query: "harry")) { result in
+            restResult = result
+        }
+        
+        XCTAssertEqual(restResult, Result<SearchRequest.ResponseType, RestError>.failure(.unknownError))
+    }
+    
+    func testError() {
+        let restUrlSessionMock = RestURLSessionMock()
+        restUrlSessionMock.error = NSError()
+        
+        var restResult: Result<SearchRequest.ResponseType, RestError>?
+        
+        let restController = RestController(session: restUrlSessionMock)
+        restController.send(SearchRequest(query: "harry")) { result in
+            restResult = result
+        }
+        
+        XCTAssertEqual(restResult, Result<SearchRequest.ResponseType, RestError>.failure(.unknownError))
+    }
+    
+    func testIncorrectDataType() {
+        let restUrlSessionMock = RestURLSessionMock()
+        restUrlSessionMock.data = """
+        {
+            "an": "invalid",
+            "json": "response"
+        }
+        """.data(using: .utf8)
+        
+        // Create a success response
+        let response = HTTPURLResponse(url: URL(string: "https://https://www.storytel.se")!, statusCode: 200, httpVersion: nil, headerFields: nil)
+        restUrlSessionMock.response = response
+        
+        var restResult: Result<SearchRequest.ResponseType, RestError>?
+        
+        let restController = RestController(session: restUrlSessionMock)
+        restController.send(SearchRequest(query: "harry"), completionHandler: { result in
+            
+            restResult = result
+        })
+        
+        XCTAssertEqual(restResult, Result<SearchRequest.ResponseType, RestError>.failure(.decodeError))
     }
 
     func testExample() {

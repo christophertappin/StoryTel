@@ -13,11 +13,11 @@
 		E74B3D1D242B924F007832FF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E74B3D1C242B924F007832FF /* Preview Assets.xcassets */; };
 		E74B3D20242B924F007832FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E74B3D1E242B924F007832FF /* LaunchScreen.storyboard */; };
 		E74B3D2B242B924F007832FF /* StorytelTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D2A242B924F007832FF /* StorytelTaskTests.swift */; };
-		E74B3D3D242B9AB4007832FF /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D3C242B9AB4007832FF /* Book.swift */; };
 		E74B3D40242B9CE2007832FF /* RestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D3F242B9CE2007832FF /* RestController.swift */; };
 		E74B3D42242B9E5C007832FF /* RestRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D41242B9E5C007832FF /* RestRequest.swift */; };
 		E74B3D44242B9F82007832FF /* SearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D43242B9F82007832FF /* SearchRequest.swift */; };
 		E74B3D47242BA590007832FF /* RestControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D46242BA590007832FF /* RestControllerTests.swift */; };
+		E74B3D49242BEB37007832FF /* SearchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D48242BEB37007832FF /* SearchRequestTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,11 +41,11 @@
 		E74B3D26242B924F007832FF /* StorytelTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StorytelTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E74B3D2A242B924F007832FF /* StorytelTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorytelTaskTests.swift; sourceTree = "<group>"; };
 		E74B3D2C242B924F007832FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E74B3D3C242B9AB4007832FF /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		E74B3D3F242B9CE2007832FF /* RestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestController.swift; sourceTree = "<group>"; };
 		E74B3D41242B9E5C007832FF /* RestRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestRequest.swift; sourceTree = "<group>"; };
 		E74B3D43242B9F82007832FF /* SearchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequest.swift; sourceTree = "<group>"; };
 		E74B3D46242BA590007832FF /* RestControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestControllerTests.swift; sourceTree = "<group>"; };
+		E74B3D48242BEB37007832FF /* SearchRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequestTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				E74B3D3E242B9CCA007832FF /* Rest */,
-				E74B3D3B242B9A76007832FF /* Entities */,
 				E74B3D13242B924D007832FF /* AppDelegate.swift */,
 				E74B3D15242B924D007832FF /* SceneDelegate.swift */,
 				E74B3D19242B924F007832FF /* Assets.xcassets */,
@@ -117,14 +116,6 @@
 			path = StorytelTaskTests;
 			sourceTree = "<group>";
 		};
-		E74B3D3B242B9A76007832FF /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				E74B3D3C242B9AB4007832FF /* Book.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
 		E74B3D3E242B9CCA007832FF /* Rest */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				E74B3D46242BA590007832FF /* RestControllerTests.swift */,
+				E74B3D48242BEB37007832FF /* SearchRequestTests.swift */,
 			);
 			path = Rest;
 			sourceTree = "<group>";
@@ -249,7 +241,6 @@
 				E74B3D42242B9E5C007832FF /* RestRequest.swift in Sources */,
 				E74B3D40242B9CE2007832FF /* RestController.swift in Sources */,
 				E74B3D16242B924D007832FF /* SceneDelegate.swift in Sources */,
-				E74B3D3D242B9AB4007832FF /* Book.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +250,7 @@
 			files = (
 				E74B3D2B242B924F007832FF /* StorytelTaskTests.swift in Sources */,
 				E74B3D47242BA590007832FF /* RestControllerTests.swift in Sources */,
+				E74B3D49242BEB37007832FF /* SearchRequestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

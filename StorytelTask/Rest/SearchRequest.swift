@@ -28,8 +28,8 @@ struct SearchRequest: RestRequest {
 }
 
 struct SearchResult: Decodable {
-    var query: String?
-    var items: [BookItem]?
+    var query: String
+    var items: [BookItem]
 }
 
 extension SearchResult: Equatable {
@@ -58,8 +58,8 @@ extension BookItem: Equatable {
 }
 
 struct Person: Decodable {
-    var id: String?
-    var name: String?
+    var id: String
+    var name: String
 }
 
 extension Person: Equatable {
@@ -70,9 +70,9 @@ extension Person: Equatable {
 }
 
 struct Cover: Decodable {
-    var url: String?
-    var width: Int?
-    var height: Int?
+    var url: String
+    var width: Int
+    var height: Int
 }
 
 extension Cover: Equatable {
