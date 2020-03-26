@@ -18,6 +18,15 @@
 		E74B3D44242B9F82007832FF /* SearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D43242B9F82007832FF /* SearchRequest.swift */; };
 		E74B3D47242BA590007832FF /* RestControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D46242BA590007832FF /* RestControllerTests.swift */; };
 		E74B3D49242BEB37007832FF /* SearchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D48242BEB37007832FF /* SearchRequestTests.swift */; };
+		E74B3D4C242BEED9007832FF /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D4B242BEED9007832FF /* SearchResultsViewController.swift */; };
+		E74B3D4E242BEFA4007832FF /* SearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D4D242BEFA4007832FF /* SearchResultsPresenter.swift */; };
+		E74B3D50242BF0B1007832FF /* SearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D4F242BF0B1007832FF /* SearchResultsInteractor.swift */; };
+		E74B3D53242BF441007832FF /* SearchResultsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D52242BF441007832FF /* SearchResultsInteractorTests.swift */; };
+		E74B3D56242BF79C007832FF /* SearchApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D55242BF79C007832FF /* SearchApiService.swift */; };
+		E74B3D59242CAAF3007832FF /* SearchApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B3D58242CAAF3007832FF /* SearchApiTests.swift */; };
+		E75F147E242D01C700DDD86A /* SearchResultsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F147D242D01C700DDD86A /* SearchResultsRouter.swift */; };
+		E75F1480242D0D8000DDD86A /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F147F242D0D8000DDD86A /* SearchResultTableViewCell.swift */; };
+		E75F1482242D35EA00DDD86A /* ImageRequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75F1481242D35EA00DDD86A /* ImageRequestService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +55,15 @@
 		E74B3D43242B9F82007832FF /* SearchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequest.swift; sourceTree = "<group>"; };
 		E74B3D46242BA590007832FF /* RestControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestControllerTests.swift; sourceTree = "<group>"; };
 		E74B3D48242BEB37007832FF /* SearchRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequestTests.swift; sourceTree = "<group>"; };
+		E74B3D4B242BEED9007832FF /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
+		E74B3D4D242BEFA4007832FF /* SearchResultsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsPresenter.swift; sourceTree = "<group>"; };
+		E74B3D4F242BF0B1007832FF /* SearchResultsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsInteractor.swift; sourceTree = "<group>"; };
+		E74B3D52242BF441007832FF /* SearchResultsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsInteractorTests.swift; sourceTree = "<group>"; };
+		E74B3D55242BF79C007832FF /* SearchApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchApiService.swift; sourceTree = "<group>"; };
+		E74B3D58242CAAF3007832FF /* SearchApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchApiTests.swift; sourceTree = "<group>"; };
+		E75F147D242D01C700DDD86A /* SearchResultsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsRouter.swift; sourceTree = "<group>"; };
+		E75F147F242D0D8000DDD86A /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		E75F1481242D35EA00DDD86A /* ImageRequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequestService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +84,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E7414E31242CFCC600F3862B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E75F147F242D0D8000DDD86A /* SearchResultTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		E74B3D07242B924D007832FF = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +113,8 @@
 		E74B3D12242B924D007832FF /* StorytelTask */ = {
 			isa = PBXGroup;
 			children = (
+				E74B3D54242BF787007832FF /* Services */,
+				E74B3D4A242BEEB4007832FF /* SearchResults */,
 				E74B3D3E242B9CCA007832FF /* Rest */,
 				E74B3D13242B924D007832FF /* AppDelegate.swift */,
 				E74B3D15242B924D007832FF /* SceneDelegate.swift */,
@@ -109,6 +137,8 @@
 		E74B3D29242B924F007832FF /* StorytelTaskTests */ = {
 			isa = PBXGroup;
 			children = (
+				E74B3D57242CAACE007832FF /* Services */,
+				E74B3D51242BF42A007832FF /* SearchResults */,
 				E74B3D45242BA575007832FF /* Rest */,
 				E74B3D2A242B924F007832FF /* StorytelTaskTests.swift */,
 				E74B3D2C242B924F007832FF /* Info.plist */,
@@ -133,6 +163,43 @@
 				E74B3D48242BEB37007832FF /* SearchRequestTests.swift */,
 			);
 			path = Rest;
+			sourceTree = "<group>";
+		};
+		E74B3D4A242BEEB4007832FF /* SearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				E7414E31242CFCC600F3862B /* View */,
+				E74B3D4B242BEED9007832FF /* SearchResultsViewController.swift */,
+				E74B3D4D242BEFA4007832FF /* SearchResultsPresenter.swift */,
+				E74B3D4F242BF0B1007832FF /* SearchResultsInteractor.swift */,
+				E75F147D242D01C700DDD86A /* SearchResultsRouter.swift */,
+			);
+			path = SearchResults;
+			sourceTree = "<group>";
+		};
+		E74B3D51242BF42A007832FF /* SearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				E74B3D52242BF441007832FF /* SearchResultsInteractorTests.swift */,
+			);
+			path = SearchResults;
+			sourceTree = "<group>";
+		};
+		E74B3D54242BF787007832FF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E74B3D55242BF79C007832FF /* SearchApiService.swift */,
+				E75F1481242D35EA00DDD86A /* ImageRequestService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E74B3D57242CAACE007832FF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E74B3D58242CAAF3007832FF /* SearchApiTests.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,8 +304,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E74B3D14242B924D007832FF /* AppDelegate.swift in Sources */,
+				E75F1482242D35EA00DDD86A /* ImageRequestService.swift in Sources */,
+				E75F1480242D0D8000DDD86A /* SearchResultTableViewCell.swift in Sources */,
+				E74B3D4E242BEFA4007832FF /* SearchResultsPresenter.swift in Sources */,
 				E74B3D44242B9F82007832FF /* SearchRequest.swift in Sources */,
+				E74B3D50242BF0B1007832FF /* SearchResultsInteractor.swift in Sources */,
+				E74B3D4C242BEED9007832FF /* SearchResultsViewController.swift in Sources */,
+				E75F147E242D01C700DDD86A /* SearchResultsRouter.swift in Sources */,
 				E74B3D42242B9E5C007832FF /* RestRequest.swift in Sources */,
+				E74B3D56242BF79C007832FF /* SearchApiService.swift in Sources */,
 				E74B3D40242B9CE2007832FF /* RestController.swift in Sources */,
 				E74B3D16242B924D007832FF /* SceneDelegate.swift in Sources */,
 			);
@@ -251,6 +325,8 @@
 				E74B3D2B242B924F007832FF /* StorytelTaskTests.swift in Sources */,
 				E74B3D47242BA590007832FF /* RestControllerTests.swift in Sources */,
 				E74B3D49242BEB37007832FF /* SearchRequestTests.swift in Sources */,
+				E74B3D53242BF441007832FF /* SearchResultsInteractorTests.swift in Sources */,
+				E74B3D59242CAAF3007832FF /* SearchApiTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -36,11 +36,17 @@ extension URLSession: RestURLSession {
 
 }
 
+protocol RestControllerProtocol {
+    
+    func send<T: RestRequest>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void)
+    
+}
+
 /**
  Controller for sending rest requests.
  */
-class RestController {
-
+class RestController: RestControllerProtocol {
+    
     private let session: RestURLSession
 
     /**
@@ -59,7 +65,7 @@ class RestController {
      - Parameters:
         - request:
      */
-    func send<Request: RestRequest>(_ request: Request, completionHandler completion: @escaping (Result<Request.ResponseType, RestError>) -> Void) {
+    func send<T: RestRequest>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void) {
 
         session.restTask(with: request.url) { data, response, error in
 

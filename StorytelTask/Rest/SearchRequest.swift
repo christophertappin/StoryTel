@@ -9,7 +9,7 @@
 import Foundation
 
 struct SearchRequest: RestRequest {
-    var path: String = "query"
+    var path: String = "search"
     
     var queryItems: [URLQueryItem]
     
@@ -24,6 +24,26 @@ struct SearchRequest: RestRequest {
             let pageQueryItem = URLQueryItem(name: "page", value: page)
             queryItems.append(pageQueryItem)
         }
+    }
+}
+
+struct ImageRequest: RestRequest {
+    var path: String
+    
+    var queryItems: [URLQueryItem]
+    
+    typealias ResponseType = Data
+    
+    var url: URL
+    
+    init(url: URL, path: String = "", queryItems: [URLQueryItem] = []) {
+        self.url = url
+        self.path = path
+        self.queryItems = queryItems
+    }
+    
+    func decode(data: Data) -> Data? {
+        return data
     }
 }
 
@@ -82,3 +102,4 @@ extension Cover: Equatable {
             && lhs.height == rhs.height
     }
 }
+
