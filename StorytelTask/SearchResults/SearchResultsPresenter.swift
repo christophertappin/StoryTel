@@ -18,6 +18,7 @@ protocol ViewPresenterProtocol: class {
     
     func viewDidLoad()
     func refresh()
+    func fetchNextPage()
     func numberOfRowsInSection() -> Int
     func bookTitle(indexPath: IndexPath) -> String?
     func authors(indexPath: IndexPath) -> [String]?
@@ -32,6 +33,10 @@ protocol SearchResultsPresenterProtocol: class {
 }
 
 class SearchResultsPresenter: ViewPresenterProtocol {
+    func fetchNextPage() {
+        interactor?.loadNextPage()
+    }
+    
     
     var view: SearchResultsViewProtocol?
     var interactor: SearchResultsInteractor?

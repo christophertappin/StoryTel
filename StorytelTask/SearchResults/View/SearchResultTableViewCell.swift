@@ -23,7 +23,6 @@ class SearchResultTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 16)
         label.textAlignment = .left
-        label.text = "test"
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -33,7 +32,6 @@ class SearchResultTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .left
-        label.text = "test"
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -43,7 +41,6 @@ class SearchResultTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .left
-        label.text = "test"
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

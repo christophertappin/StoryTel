@@ -49,6 +49,8 @@ struct ImageRequest: RestRequest {
 
 struct SearchResult: Decodable {
     var query: String
+    var nextPageToken: String?
+    var totalCount: Int
     var items: [BookItem]
 }
 

@@ -11,7 +11,8 @@ import Foundation
 protocol SearchResultsInteractorProtocol {
     var presenter: SearchResultsPresenterProtocol? { get set }
     
-    func loadResults()
+    func loadResults(page: String?)
+    func loadNextPage()
     func loadImage(url: URL) -> Data?
     func result(forIndex index: Int)
 }
@@ -37,9 +38,9 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
     }
 
     
-    func loadResults() {
+    func loadResults(page: String? = nil) {
         
-        searchApiService.getResults(query: "harry", completion: { [weak self] result in
+        searchApiService.getResults(query: "harry", page: page, completion: { [weak self] result in
             switch result {
             case .failure(_):
                 break // Display some error
@@ -49,6 +50,12 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
             }
         })
         
+    }
+    
+    func loadNextPage() {
+        if let nextPage = searchResults?.nextPageToken {
+            loadResults(page: nextPage)
+        }
     }
     
     func loadImage(url: URL) -> Data? {

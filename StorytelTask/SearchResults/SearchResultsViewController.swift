@@ -18,12 +18,53 @@ class SearchResultsViewController: UIViewController {
     
     var presenter: ViewPresenterProtocol?
     
+    var header: String?
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
+        view.addSubview(tableView)
+        tableView.backgroundColor = .systemGroupedBackground
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.backgroundColor = .systemGroupedBackground
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableView.automaticDimension
+        
         tableView.dataSource = self
         tableView.delegate = self
         
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        tableView.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "queryResultCell")
+        
+        let headerView = tableViewHeader
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tableView.tableHeaderView = headerView
+        
+        headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        headerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200.0).isActive = true
+        headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+        headerView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        tableView.layoutIfNeeded()
+        
         return tableView
+    }()
+    
+    lazy var tableViewHeader: UILabel = {
+        let headerView = UILabel()
+        headerView.text = header
+        headerView.font = .systemFont(ofSize: 36)
+        headerView.textAlignment = .center
+        headerView.backgroundColor = .systemGroupedBackground
+        
+        return headerView
     }()
 
     override func viewDidLoad() {
@@ -34,40 +75,82 @@ class SearchResultsViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        setupView()
+        // Show spinner while we fetch initial results
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.startAnimating()
+        tableView.tableFooterView = spinner
+        tableView.tableFooterView?.isHidden = false
     }
 }
 
 // MARK: - Setup view
 extension SearchResultsViewController {
-    func setupView() {
-        view.addSubview(tableView)
-        view.backgroundColor = .systemBackground
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Constrain tableview to the view's margins...
-        let margins = view.layoutMarginsGuide
-        
-        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
-        
-        tableView.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "queryResultCell")
-        
-    }
+//    func setupView() {
+//        setupTableView()
+//        setupTableViewConstraints()
+//
+//
+//
+//
+//
+//        tableView.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "queryResultCell")
+//
+//        let headerView = UILabel()
+//        headerView.text = header
+//        headerView.font = .systemFont(ofSize: 36)
+//        headerView.textAlignment = .center
+//        headerView.backgroundColor = .systemGroupedBackground
+//        headerView.layer.opacity = 0.85
+//        headerView.isOpaque = false
+//        headerView.translatesAutoresizingMaskIntoConstraints = false
+//        let headerLabel = UILabel()
+//        headerLabel.text = header
+//        headerView.addSubview(headerLabel)
+//        tableView.tableHeaderView = headerView
+//        headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+//        headerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200.0).isActive = true
+//        headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+//        headerView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+//        tableView.layoutIfNeeded()
+//    }
+//
+//    func setupTableViewHeader() {
+//
+//    }
+//
+//    func setupTableView() {
+//        view.addSubview(tableView)
+//        tableView.backgroundColor = .systemGroupedBackground
+//        tableView.estimatedRowHeight = 100
+//        tableView.rowHeight = UITableView.automaticDimension
+//    }
+//
+//    func setupTableViewConstraints() {
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+//        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+//        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+//        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//    }
 }
 
 // MARK: - Table view data source
 extension SearchResultsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "queryResultCell", for: indexPath) as! SearchResultTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "queryResultCell", for: indexPath) as! SearchResultTableViewCell
         cell.titleLabel.text = presenter?.bookTitle(indexPath: indexPath)
-        cell.authorsLabel.text = presenter?.authors(indexPath: indexPath)?.joined(separator: ", ")
-        cell.narratorsLabel.text = presenter?.narrators(indexPath: indexPath)?.joined(separator: ", ")
+        if let authors = presenter?.authors(indexPath: indexPath),
+            authors.count > 0 {
+            
+            cell.authorsLabel.text = "By: " + authors.joined(separator: ", ")
+        }
+        if let narrators = presenter?.narrators(indexPath: indexPath),
+            narrators.count > 0 {
+            
+            cell.narratorsLabel.text = "With: " + narrators.joined(separator: ", ")
+        }
+        
         if let data = presenter?.cover(indexPath: indexPath) {
             cell.cover.image = UIImage(data: data)
         }
@@ -84,6 +167,10 @@ extension SearchResultsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.numberOfRowsInSection() ?? 0
     }
+    
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return presenter?.query
+//    }
 }
 
 extension SearchResultsViewController: UITableViewDelegate {
@@ -94,6 +181,17 @@ extension SearchResultsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let totalRows = presenter?.numberOfRowsInSection(),
+            indexPath.row == totalRows - 1 {
+            let spinner = UIActivityIndicatorView(style: .medium)
+            spinner.startAnimating()
+            tableView.tableFooterView = spinner
+            tableView.tableFooterView?.isHidden = false
+            presenter?.fetchNextPage()
+        }
     }
     
 
@@ -161,6 +259,8 @@ extension SearchResultsViewController: SearchResultsViewProtocol {
     
     func getQuerySuccess() {
         self.tableView.reloadData()
+        let header = tableView.tableHeaderView as? UILabel
+        header?.text = "Query: " + (presenter?.query ?? "")
     }
     
     func getQueryFailure(error: String) {
