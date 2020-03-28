@@ -69,6 +69,7 @@ class RestControllerTests: XCTestCase {
         restUrlSessionMock.response = response
         
         let searchResult = SearchResult(query: "harry",
+                                        totalCount: 10,
                                         items: [BookItem(title: "Harry",
                                                          authors: [Author(id: "7766",
                                                                           name: "Tim Wohlforth")],

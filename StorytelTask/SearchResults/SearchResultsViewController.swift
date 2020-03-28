@@ -24,11 +24,11 @@ class SearchResultsViewController: UIViewController {
         let tableView = UITableView()
         view.addSubview(tableView)
         tableView.backgroundColor = .systemGroupedBackground
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.backgroundColor = .systemGroupedBackground
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = 90
+//        tableView.backgroundColor = .systemGroupedBackground
+//        tableView.estimatedRowHeight = 100
+//        tableView.rowHeight = UITableView.automaticDimension
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -52,7 +52,7 @@ class SearchResultsViewController: UIViewController {
         headerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200.0).isActive = true
         headerView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
         headerView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-        tableView.layoutIfNeeded()
+        
         
         return tableView
     }()
@@ -70,6 +70,10 @@ class SearchResultsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        tableView.layoutIfNeeded()
     }
     
     override func loadView() {
@@ -175,9 +179,9 @@ extension SearchResultsViewController: UITableViewDataSource {
 
 extension SearchResultsViewController: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableView.automaticDimension
+//    }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -264,7 +268,7 @@ extension SearchResultsViewController: SearchResultsViewProtocol {
     }
     
     func getQueryFailure(error: String) {
-//        self.tableView.reloadData()
+        
     }
     
     

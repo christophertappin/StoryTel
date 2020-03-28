@@ -9,26 +9,26 @@
 import XCTest
 @testable import StorytelTask
 
-class SearchApiTests: XCTestCase {
+class RestControllerMock: RestControllerProtocol {
+    var result: Result<Decodable?, RestError>?
     
-    class RestControllerMock: RestControllerProtocol {
-        var result: Result<SearchResult?, RestError>?
+    func send<T: Request>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void) {
         
-        func send<T: RestRequest>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void) {
-            
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let searchResult as T.ResponseType):
-                completion(.success(searchResult))
-            case .none:
-                break
-            case .some(_):
-                break
-            }
+        switch result {
+        case .failure(let error):
+            completion(.failure(error))
+        case .success(let searchResult as T.ResponseType):
+            completion(.success(searchResult))
+        case .none:
+            break
+        case .some(_):
+            break
         }
-        
     }
+    
+}
+
+class SearchApiTests: XCTestCase {
     
     var restUrlSessionMock: RestURLSessionMock!
 
@@ -54,7 +54,7 @@ class SearchApiTests: XCTestCase {
     }
     
     func testGetResultsFailure() {
-        let result: Result<SearchResult?, RestError> = .failure(.badRequest)
+        let result: Result<Decodable?, RestError> = .failure(.badRequest)
         
         let restControllerMock = RestControllerMock()
         restControllerMock.result = result
@@ -71,8 +71,8 @@ class SearchApiTests: XCTestCase {
     }
     
     func testGetResultsSuccess() {
-        let searchResult = SearchResult(query: "query", items: [])
-        let result: Result<SearchResult?, RestError> = .success(searchResult)
+        let searchResult = SearchResult(query: "query", totalCount: 10, items: [])
+        let result: Result<Decodable?, RestError> = .success(searchResult)
         
         let restControllerMock = RestControllerMock()
         restControllerMock.result = result
@@ -81,7 +81,7 @@ class SearchApiTests: XCTestCase {
         
         var apiResult: Result<SearchResult, SearchError>?
         
-        searchApiService.getResults(query: "query", page: "A Non existent page reference", completion: { result in
+        searchApiService.getResults(query: "query", page: nil, completion: { result in
             apiResult = result
         })
         

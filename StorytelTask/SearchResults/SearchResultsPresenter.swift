@@ -10,19 +10,18 @@ import Foundation
 
 protocol ViewPresenterProtocol: class {
     var view: SearchResultsViewProtocol? { get set }
-    var interactor: SearchResultsInteractor? { get set }
+    var interactor: SearchResultsInteractorProtocol? { get set }
     var router: SearchResultsRouterProtocol? { get set }
     
     var query: String? { get set }
     var books: [BookItem] { get set }
     
     func viewDidLoad()
-    func refresh()
     func fetchNextPage()
     func numberOfRowsInSection() -> Int
-    func bookTitle(indexPath: IndexPath) -> String?
-    func authors(indexPath: IndexPath) -> [String]?
-    func narrators(indexPath: IndexPath) -> [String]?
+    func bookTitle(indexPath: IndexPath) -> String
+    func authors(indexPath: IndexPath) -> [String]
+    func narrators(indexPath: IndexPath) -> [String]
     func cover(indexPath: IndexPath) -> Data?
 }
 
@@ -39,7 +38,7 @@ class SearchResultsPresenter: ViewPresenterProtocol {
     
     
     var view: SearchResultsViewProtocol?
-    var interactor: SearchResultsInteractor?
+    var interactor: SearchResultsInteractorProtocol?
     var router: SearchResultsRouterProtocol?
     
     var query: String?
@@ -50,44 +49,38 @@ class SearchResultsPresenter: ViewPresenterProtocol {
             }
         }
     }
-    var imageCache = NSCache <NSString, NSData>() {
-        didSet {
-            DispatchQueue.main.async {
-                self.view?.getImageSuccess()
-            }
-        }
-    }
+    var imageCache = NSCache <NSString, NSData>()
     
     func viewDidLoad() {
-        interactor?.loadResults()
-    }
-    
-    func refresh() {
-        interactor?.loadResults()
+        interactor?.loadResults(page: nil)
     }
     
     func numberOfRowsInSection() -> Int {
         return books.count
     }
     
-    func bookTitle(indexPath: IndexPath) -> String? {
+    func bookTitle(indexPath: IndexPath) -> String {
         return books[indexPath.row].title
     }
     
-    func authors(indexPath: IndexPath) -> [String]? {
-        if let authors = books[indexPath.row].authors {
-            return authors.map { $0.name }
-        }
+    func authors(indexPath: IndexPath) -> [String] {
+//        if let authors = books[indexPath.row].authors {
+//            return authors.map { $0.name }
+//        }
+//        
+//        return nil
         
-        return nil
+        return books[indexPath.row].authors.map { $0.name }
     }
     
-    func narrators(indexPath: IndexPath) -> [String]? {
-        if let narrators = books[indexPath.row].narrators {
-            return narrators.map { $0.name }
-        }
+    func narrators(indexPath: IndexPath) -> [String] {
+//        if let narrators = books[indexPath.row].narrators {
+//            return narrators.map { $0.name }
+//        }
+//
+//        return nil
         
-        return nil
+        return books[indexPath.row].narrators.map { $0.name }
     }
     
     func cover(indexPath: IndexPath) -> Data? {
@@ -119,7 +112,7 @@ extension SearchResultsPresenter: SearchResultsPresenterProtocol {
     }
     
     func searchResultFailure(errorCode: Int) {
-        
+        view?.getQueryFailure(error: "An error occured fetching results")
     }
     
     

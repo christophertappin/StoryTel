@@ -38,7 +38,7 @@ extension URLSession: RestURLSession {
 
 protocol RestControllerProtocol {
     
-    func send<T: RestRequest>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void)
+    func send<T: Request>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void)
     
 }
 
@@ -65,7 +65,7 @@ class RestController: RestControllerProtocol {
      - Parameters:
         - request:
      */
-    func send<T: RestRequest>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void) {
+    func send<T: Request>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void) {
 
         session.restTask(with: request.url) { data, response, error in
 
@@ -92,7 +92,7 @@ class RestController: RestControllerProtocol {
 
             if let data = data {
 
-                guard let responseData = request.decode(data: data) else {
+                guard let responseData = request.response(data: data) else {
                     completion(.failure(.decodeError))
                     return
                 }

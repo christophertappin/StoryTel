@@ -27,22 +27,13 @@ struct SearchRequest: RestRequest {
     }
 }
 
-struct ImageRequest: RestRequest {
-    var path: String
-    
-    var queryItems: [URLQueryItem]
+struct ImageRequest: Request {
     
     typealias ResponseType = Data
     
     var url: URL
     
-    init(url: URL, path: String = "", queryItems: [URLQueryItem] = []) {
-        self.url = url
-        self.path = path
-        self.queryItems = queryItems
-    }
-    
-    func decode(data: Data) -> Data? {
+    func response(data: Data) -> Data? {
         return data
     }
 }
@@ -64,9 +55,9 @@ typealias Author = Person
 typealias Narrator = Person
 
 struct BookItem: Decodable {
-    var title: String?
-    var authors: [Author]?
-    var narrators: [Narrator]?
+    var title: String
+    var authors: [Author]
+    var narrators: [Narrator]
     var cover: Cover?
 }
 

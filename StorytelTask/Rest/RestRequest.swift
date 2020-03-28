@@ -13,12 +13,19 @@ enum StorytelAPI {
     static let host = "api.storytel.net"
 }
 
-
-protocol RestRequest {
+protocol Request {
     associatedtype ResponseType: Decodable
+    
+    var url: URL { get }
+    
+    func response(data: Data) -> ResponseType?
+}
+
+protocol RestRequest: Request {
     
     var path: String { get }
     var queryItems: [URLQueryItem] { get }
+    
 }
 
 extension RestRequest {
@@ -32,7 +39,7 @@ extension RestRequest {
         return urlComponents.url!
     }
     
-    func decode(data: Data) -> ResponseType? {
+    func response(data: Data) -> ResponseType? {
         return try? JSONDecoder().decode(ResponseType.self, from: data)
     }
     

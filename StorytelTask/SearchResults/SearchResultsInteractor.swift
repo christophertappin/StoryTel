@@ -14,7 +14,6 @@ protocol SearchResultsInteractorProtocol {
     func loadResults(page: String?)
     func loadNextPage()
     func loadImage(url: URL) -> Data?
-    func result(forIndex index: Int)
 }
 
 class SearchResultsInteractor: SearchResultsInteractorProtocol {
@@ -64,7 +63,8 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
         }
         imageRequestService.getResults(url: url, completion: { [weak self] result in
             switch result {
-            case .failure(let error):
+            case .failure(_):
+                // If we can't get the image, just carry on
                 break
             case .success(let response):
                 self?.imageCache.setObject(response as NSData, forKey: url.absoluteString as NSString)
@@ -74,10 +74,5 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
         
         return nil
     }
-    
-    func result(forIndex index: Int) {
-        
-    }
-    
     
 }

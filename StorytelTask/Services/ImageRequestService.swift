@@ -23,42 +23,14 @@ class ImageRequestService {
     
     func getResults(url: URL, completion: @escaping (Result<Data, ImageError>) -> Void) {
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard error == nil else {
-                completion(.failure(.unknownError))
-                return
-            }
-
-            if let response = response as? HTTPURLResponse {
-                guard 200...299 ~= response.statusCode else {
-                    switch response.statusCode {
-                    case 404:
-                        completion(.failure(.notFound))
-                        return
-                    default:
-                        completion(.failure(.unknownError))
-                        return
-                    }
-                }
-            }
-
-            if let data = data {
-
-                completion(.success(data))
-
-            }
-            else {
+        let imageRequest = ImageRequest(url: url)
+        self.restController.send(imageRequest, completionHandler: { result in
+            switch result {
+            case .failure(_):
                 completion(.failure(.imageError))
+            case .success(let response):
+                completion(.success(response))
             }
-        }.resume()
-//        let searchRequest = ImageRequest(url: url)
-//        self.restController.send(searchRequest, completionHandler: { result in
-//            switch result {
-//            case .failure(_):
-//                completion(.failure(.notFound))
-//            case .success(let response):
-//                completion(.success(response))
-//            }
-//        })
+        })
     }
 }

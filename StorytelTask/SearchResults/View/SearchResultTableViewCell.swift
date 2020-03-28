@@ -15,7 +15,8 @@ class SearchResultTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.sizeThatFits(CGSize(width: 64, height: 64))
+        imageView.sizeToFit()
+//        imageView.sizeThatFits(CGSize(width: 64, height: 64))
         return imageView
     }()
     
@@ -24,7 +25,11 @@ class SearchResultTableViewCell: UITableViewCell {
         label.font = .boldSystemFont(ofSize: 16)
         label.textAlignment = .left
         label.textColor = .black
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         return label
     }()
     
@@ -33,6 +38,9 @@ class SearchResultTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .left
         label.textColor = .black
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,12 +50,18 @@ class SearchResultTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .left
         label.textColor = .black
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        
+//        contentView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         contentView.addSubview(cover)
         contentView.addSubview(titleLabel)
@@ -64,8 +78,8 @@ class SearchResultTableViewCell: UITableViewCell {
             cover.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor),
             cover.topAnchor.constraint(equalTo: marginGuide.topAnchor),
             cover.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
-            cover.widthAnchor.constraint(equalToConstant: 64),
-            cover.heightAnchor.constraint(equalToConstant: 64)
+            cover.widthAnchor.constraint(equalToConstant: 64.0),
+//            cover.heightAnchor.constraint(equalToConstant: 64)
         ]
         NSLayoutConstraint.activate(coverConstraints)
         
@@ -77,7 +91,7 @@ class SearchResultTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate(titleLabelconstraints)
         
         let authorsLabelconstraints = [
-            authorsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            authorsLabel.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 10),
             authorsLabel.leadingAnchor.constraint(equalTo: cover.trailingAnchor, constant: 10),
             authorsLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor)
             
@@ -110,6 +124,7 @@ class SearchResultTableViewCell: UITableViewCell {
 //        NSLayoutConstraint.activate(narratorsLabelConstraints)
 //
 //        sizeToFit()
+        imageView?.sizeToFit()
     }
     
     required init?(coder: NSCoder) {
