@@ -12,6 +12,7 @@ protocol SearchResultsViewProtocol {
     func getQuerySuccess()
     func getQueryFailure(error: String)
     func getImageSuccess()
+    func isLastPage()
 }
 
 /**
@@ -63,7 +64,7 @@ class SearchResultsViewController: UIViewController {
         super.loadView()
         
         // Show spinner while we fetch initial results
-        let spinner = UIActivityIndicatorView(style: .medium)
+        let spinner = UIActivityIndicatorView(style: .large)
         spinner.startAnimating()
         tableView.backgroundView = spinner
         tableView.tableFooterView?.isHidden = false
@@ -115,11 +116,13 @@ extension SearchResultsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let totalRows = presenter?.numberOfRowsInSection(),
             indexPath.row == totalRows - 1 {
-            let spinner = UIActivityIndicatorView(style: .medium)
+            let spinner = UIActivityIndicatorView(style: .large)
             spinner.startAnimating()
             tableView.tableFooterView = spinner
             tableView.tableFooterView?.isHidden = false
             presenter?.fetchNextPage()
+            
+            // TODO: Hide the spinner if this is the last page
         }
     }
 
@@ -128,20 +131,24 @@ extension SearchResultsViewController: UITableViewDelegate {
 // MARK: - Respond to events from the presenter
 extension SearchResultsViewController: SearchResultsViewProtocol {
     func getImageSuccess() {
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     func getQuerySuccess() {
-        self.tableView.reloadData()
+        tableView.reloadData()
         let header = tableView.tableHeaderView as? UILabel
         header?.text = "Query: " + (presenter?.query ?? "")
     }
     
     func getQueryFailure(error: String) {
         let alert = UIAlertController(title: "An error occured", message: error, preferredStyle: .alert)
-        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true)
+        tableView.tableFooterView?.isHidden = true
     }
     
-    
+    func isLastPage() {
+        // Hide the spinner as there's no more data
+        tableView.tableFooterView?.isHidden = true
+    }
 }

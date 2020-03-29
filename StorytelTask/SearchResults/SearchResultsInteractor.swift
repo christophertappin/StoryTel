@@ -14,6 +14,8 @@ import Foundation
 protocol SearchResultsInteractorProtocol {
     var presenter: SearchResultsPresenterProtocol? { get set }
     
+    var hasNextPage: Bool { get }
+    
     /**
      Loads query results
      - parameters:
@@ -50,6 +52,10 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
     var imageRequestService: ImageRequestService
     weak var presenter: SearchResultsPresenterProtocol?
     
+    var hasNextPage: Bool {
+        return searchResults?.nextPageToken != nil
+    }
+    
     var searchResults: SearchResult? {
         didSet {
             self.presenter?.searchResultSuccess(query: searchResults?.query, results: searchResults?.items)
@@ -80,6 +86,7 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
     }
     
     func loadNextPage() {
+        // TODO: Make sure we're not fetching the same results twice
         if let nextPage = searchResults?.nextPageToken {
             loadResults(page: nextPage)
         }

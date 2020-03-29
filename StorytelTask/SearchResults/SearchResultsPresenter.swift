@@ -58,7 +58,15 @@ protocol SearchResultsPresenterProtocol: class {
 class SearchResultsPresenter: ViewPresenterProtocol {
     
     func fetchNextPage() {
-        interactor?.loadNextPage()
+        if interactor?.hasNextPage ?? false {
+            interactor?.loadNextPage()
+        }
+        else {
+            DispatchQueue.main.async {
+                self.view?.isLastPage()
+            }
+            
+        }
     }
     
     
@@ -120,11 +128,9 @@ extension SearchResultsPresenter: SearchResultsPresenterProtocol {
     }
     
     func searchResultFailure(errorCode: SearchResultError) {
-        view?.getQueryFailure(error: errorCode.rawValue)
+        DispatchQueue.main.async {
+            self.view?.getQueryFailure(error: errorCode.rawValue)
+        }
     }
-    
-    
-
-    
     
 }
