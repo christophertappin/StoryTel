@@ -8,12 +8,40 @@
 
 import Foundation
 
+/**
+ Interator for SearchResults. Fetched Data and sends to the presenter.
+ */
 protocol SearchResultsInteractorProtocol {
     var presenter: SearchResultsPresenterProtocol? { get set }
     
+    /**
+     Loads query results
+     - parameters:
+        - page: Optional page token
+     */
     func loadResults(page: String?)
+    
+    /**
+     Loads the next page, if one exists
+     */
     func loadNextPage()
+    
+    /**
+     Loads an image from the specified url
+     - parameters:
+        - url: The URL of the image to load
+     */
     func loadImage(url: URL) -> Data?
+}
+
+/**
+ Represents an error retrieving search results
+ */
+enum SearchResultError: String, Error {
+    typealias RawValue = String
+    
+    // TODO: Implement more specific errors.
+    case genericError = "An error occured fetching search results"
 }
 
 class SearchResultsInteractor: SearchResultsInteractorProtocol {
@@ -42,7 +70,7 @@ class SearchResultsInteractor: SearchResultsInteractorProtocol {
         searchApiService.getResults(query: "harry", page: page, completion: { [weak self] result in
             switch result {
             case .failure(_):
-                break // Display some error
+                self?.presenter?.searchResultFailure(errorCode: .genericError)
             case .success(let response):
                 self?.searchResults = response
                 

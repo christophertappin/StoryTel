@@ -8,12 +8,18 @@
 
 import Foundation
 
+/**
+ Image request errors
+ */
 enum ImageError: Error {
     case notFound
     case unknownError
     case imageError
 }
 
+/**
+ Service to obtain images
+ */
 class ImageRequestService {
     var restController: RestControllerProtocol
     
@@ -21,6 +27,13 @@ class ImageRequestService {
         self.restController = restController
     }
     
+    /**
+     Gets the image from the url
+     
+     - parameters:
+        - url: The url of the image
+        - completion: The completion handler
+     */
     func getResults(url: URL, completion: @escaping (Result<Data, ImageError>) -> Void) {
         
         let imageRequest = ImageRequest(url: url)

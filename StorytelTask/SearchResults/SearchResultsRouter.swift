@@ -8,7 +8,13 @@
 
 import UIKit
 
+/**
+ Handles routing for the SearchResults module
+ */
 protocol SearchResultsRouterProtocol {
+    /**
+     Create the viewController
+     */
     static func create() -> UINavigationController
 }
 

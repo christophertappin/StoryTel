@@ -8,10 +8,16 @@
 
 import Foundation
 
+/**
+ Search result error type
+ */
 enum SearchError: Error {
     case genericError
 }
 
+/**
+ Service for handling REST requests
+ */
 class SearchApiService {
     
     var restController: RestControllerProtocol
@@ -20,6 +26,14 @@ class SearchApiService {
         self.restController = restController
     }
     
+    /**
+     Gets results based on the query provided
+     
+     - parameters:
+        - query: The Search query
+        - page: The page reference, if any
+        - completion: The completion handler
+     */
     func getResults(query: String, page: String? = nil, completion: @escaping (Result<SearchResult, SearchError>) -> Void) {
         
         let searchRequest = SearchRequest(query: query, page: page)

@@ -8,6 +8,12 @@
 
 import Foundation
 
+typealias Author = Person
+typealias Narrator = Person
+
+/**
+ Encapsulation of a search REST API request
+ */
 struct SearchRequest: RestRequest {
     var path: String = "search"
     
@@ -27,6 +33,9 @@ struct SearchRequest: RestRequest {
     }
 }
 
+/**
+ Encapsulation of an image request.
+ */
 struct ImageRequest: Request {
     
     typealias ResponseType = Data
@@ -38,6 +47,9 @@ struct ImageRequest: Request {
     }
 }
 
+/**
+ The response from a SearchRequest
+ */
 struct SearchResult: Decodable {
     var query: String
     var nextPageToken: String?
@@ -51,8 +63,6 @@ extension SearchResult: Equatable {
     }
 }
 
-typealias Author = Person
-typealias Narrator = Person
 
 struct BookItem: Decodable {
     var title: String

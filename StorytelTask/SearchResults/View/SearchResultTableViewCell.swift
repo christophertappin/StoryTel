@@ -8,143 +8,134 @@
 
 import UIKit
 
+/**
+ Default properties of a UILabel
+ */
+@propertyWrapper
+struct LabelDefault {
+    public var wrappedValue: UILabel {
+        didSet {
+            wrappedValue.font = .systemFont(ofSize: 16)
+            wrappedValue.textAlignment = .left
+            wrappedValue.textColor = .black
+            wrappedValue.numberOfLines = 1
+            wrappedValue.lineBreakMode = .byTruncatingTail
+            wrappedValue.sizeToFit()
+        }
+    }
+    
+    public init(wrappedValue: UILabel) {
+        self.wrappedValue = wrappedValue
+        wrappedValue.translatesAutoresizingMaskIntoConstraints = false
+    }
+}
+
+/**
+ Data to be represented in the cell
+ */
+struct SearchResultCellModel {
+    var cover: Data?
+    let title: String
+    let authors: [String]
+    let narrators: [String]
+}
+
 class SearchResultTableViewCell: UITableViewCell {
     
-    let cover: UIImageView = {
+    static let reuseIdentifier = "queryResultCell"
+    
+    /**
+     Model to used to display information in the cell
+     */
+    var cellModel: SearchResultCellModel? {
+        didSet {
+            guard let cellModel = cellModel else { return }
+            if let cover = cellModel.cover {
+                coverImageView.image = UIImage(data: cover)
+            }
+            
+            titleLabel.text = cellModel.title
+            authorsLabel.text = "By: " + cellModel.authors.joined(separator: ", ")
+            narratorsLabel.text = "With: " + cellModel.narrators.joined(separator: ", ")
+        }
+    }
+    
+    /**
+    Book cover image view
+    */
+    let coverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.sizeToFit()
-//        imageView.sizeThatFits(CGSize(width: 64, height: 64))
         return imageView
     }()
     
-    let titleLabel: UILabel = {
+    /**
+     Book title UILabel.
+     */
+    @LabelDefault
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 16)
-        label.textAlignment = .left
-        label.textColor = .black
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         return label
     }()
     
-    let authorsLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        label.textAlignment = .left
-        label.textColor = .black
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    /**
+     UILabel to display authors information.
+     */
+    @LabelDefault
+    var authorsLabel = UILabel()
     
-    let narratorsLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
-        label.textAlignment = .left
-        label.textColor = .black
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    /**
+     UILabel to display narrators information.
+     */
+    @LabelDefault
+    var narratorsLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
-//        contentView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        contentView.addSubview(cover)
+        contentView.addSubview(coverImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(authorsLabel)
         contentView.addSubview(narratorsLabel)
         
+        layoutConstraints()
+    }
+    
+    /**
+     Sets up the auto layout constraints for the cell.
+     */
+    func layoutConstraints() {
         let marginGuide = contentView.layoutMarginsGuide
         
-//        cover.bounds = CGRect(x: contentView.frame.x, y: 0, width: 64, height: 64)
-//        productNameLabel.anchor(top: topAnchor, left: productImage.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: frame.size.width / 2, height: 0, enableInsets: false)
-//        productDescriptionLabel.anchor(top: productNameLabel.bottomAnchor, left: productImage.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: frame.size.width / 2, height: 0, enableInsets: false)
-        
-        let coverConstraints = [
-            cover.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor),
-            cover.topAnchor.constraint(equalTo: marginGuide.topAnchor),
-            cover.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
-            cover.widthAnchor.constraint(equalToConstant: 64.0),
-//            cover.heightAnchor.constraint(equalToConstant: 64)
-        ]
-        NSLayoutConstraint.activate(coverConstraints)
-        
-        let titleLabelconstraints = [
-            titleLabel.leadingAnchor.constraint(equalTo: cover.trailingAnchor, constant: 10),
+        let constraints = [
+            coverImageView.topAnchor.constraint(equalTo: marginGuide.topAnchor),
+            coverImageView.leadingAnchor.constraint(equalTo: marginGuide.leadingAnchor),
+            coverImageView.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
+            coverImageView.widthAnchor.constraint(equalToConstant: 64.0),
+            
             titleLabel.topAnchor.constraint(equalTo: marginGuide.topAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(titleLabelconstraints)
-        
-        let authorsLabelconstraints = [
+            titleLabel.leadingAnchor.constraint(equalTo: coverImageView.trailingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor),
+            
             authorsLabel.topAnchor.constraint(greaterThanOrEqualTo: titleLabel.bottomAnchor, constant: 10),
-            authorsLabel.leadingAnchor.constraint(equalTo: cover.trailingAnchor, constant: 10),
-            authorsLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor)
+            authorsLabel.leadingAnchor.constraint(equalTo: coverImageView.trailingAnchor, constant: 10),
+            authorsLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor),
             
-        ]
-        NSLayoutConstraint.activate(authorsLabelconstraints)
-        
-        let narratorsLabelconstraints = [
             narratorsLabel.topAnchor.constraint(equalTo: authorsLabel.bottomAnchor),
-            narratorsLabel.leadingAnchor.constraint(equalTo: cover.trailingAnchor, constant: 10),
-            narratorsLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            narratorsLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor)
-            
+            narratorsLabel.leadingAnchor.constraint(equalTo: coverImageView.trailingAnchor, constant: 10),
+            narratorsLabel.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
+            narratorsLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ]
-        NSLayoutConstraint.activate(narratorsLabelconstraints)
-        
-//        let stackView = UIStackView(arrangedSubviews: [titleLabel, authorsLabel, narratorsLabel])
-//        stackView.distribution = .equalSpacing
-//        stackView.axis = .vertical
-//        stackView.spacing = 5
-//        addSubview(stackView)
-        
-//        authorsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
-//        authorsLabel.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-//
-//        let narratorsLabelConstraints = [
-//            titleLabel.topAnchor.constraint(equalTo: authorsLabel.bottomAnchor),
-//            titleLabel.leftAnchor.constraint(equalTo: leftAnchor),
-//            titleLabel.widthAnchor.constraint(equalToConstant: frame.size.width)
-//        ]
-//        NSLayoutConstraint.activate(narratorsLabelConstraints)
-//
-//        sizeToFit()
-        imageView?.sizeToFit()
+        NSLayoutConstraint.activate(constraints)
     }
     
     required init?(coder: NSCoder) {
+        // TODO: Implement when needed.
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-//    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
-//        <#code#>
-//    }
-
 }

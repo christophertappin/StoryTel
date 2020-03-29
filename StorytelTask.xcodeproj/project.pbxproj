@@ -91,6 +91,7 @@
 		E7414E31242CFCC600F3862B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E74B3D4B242BEED9007832FF /* SearchResultsViewController.swift */,
 				E75F147F242D0D8000DDD86A /* SearchResultTableViewCell.swift */,
 			);
 			path = View;
@@ -173,7 +174,6 @@
 			isa = PBXGroup;
 			children = (
 				E7414E31242CFCC600F3862B /* View */,
-				E74B3D4B242BEED9007832FF /* SearchResultsViewController.swift */,
 				E74B3D4D242BEFA4007832FF /* SearchResultsPresenter.swift */,
 				E74B3D4F242BF0B1007832FF /* SearchResultsInteractor.swift */,
 				E75F147D242D01C700DDD86A /* SearchResultsRouter.swift */,

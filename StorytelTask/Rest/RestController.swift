@@ -60,10 +60,11 @@ class RestController: RestControllerProtocol {
     }
 
     /**
-     Sends the request
+     Sends the request and handles the response according to the completion handler.
 
      - Parameters:
-        - request:
+        - request: The request
+        - completionHandler: The completion handler
      */
     func send<T: Request>(_ request: T, completionHandler completion: @escaping (Result<T.ResponseType, RestError>) -> Void) {
 

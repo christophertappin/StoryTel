@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ Presenter protocol to represent events/requests received from the UI
+ */
 protocol ViewPresenterProtocol: class {
     var view: SearchResultsViewProtocol? { get set }
     var interactor: SearchResultsInteractorProtocol? { get set }
@@ -16,22 +19,44 @@ protocol ViewPresenterProtocol: class {
     var query: String? { get set }
     var books: [BookItem] { get set }
     
+    /**
+     View has loaded, so get some data
+     */
     func viewDidLoad()
+    
+    /**
+     Get the next page of results
+     */
     func fetchNextPage()
+    
+    /**
+     Get the number of rows of data
+     - returns:
+        - Int: The number of rows
+     */
     func numberOfRowsInSection() -> Int
-    func bookTitle(indexPath: IndexPath) -> String
-    func authors(indexPath: IndexPath) -> [String]
-    func narrators(indexPath: IndexPath) -> [String]
-    func cover(indexPath: IndexPath) -> Data?
+    
+    /**
+     Get the data for the cell specified at indexPath
+     - parameters:
+        - indexPAth: The index path of the cell
+     - returns:
+        - A SearchResultCellModel representing the cell data.
+     */
+    func cellData(indexPath: IndexPath) -> SearchResultCellModel
 }
 
+/**
+ Presenter protocol to represent events sent from the Interactor
+ */
 protocol SearchResultsPresenterProtocol: class {
     func searchResultSuccess(query: String?, results: [BookItem]?)
-    func searchResultFailure(errorCode: Int)
+    func searchResultFailure(errorCode: SearchResultError)
     func imageCacheUpdated()
 }
 
 class SearchResultsPresenter: ViewPresenterProtocol {
+    
     func fetchNextPage() {
         interactor?.loadNextPage()
     }
@@ -59,31 +84,16 @@ class SearchResultsPresenter: ViewPresenterProtocol {
         return books.count
     }
     
-    func bookTitle(indexPath: IndexPath) -> String {
-        return books[indexPath.row].title
-    }
-    
-    func authors(indexPath: IndexPath) -> [String] {
-//        if let authors = books[indexPath.row].authors {
-//            return authors.map { $0.name }
-//        }
-//        
-//        return nil
+    func cellData(indexPath: IndexPath) -> SearchResultCellModel {
+        let coverData = cover(indexPath: indexPath)
+        let bookTitle = books[indexPath.row].title
+        let authors = books[indexPath.row].authors.map { $0.name }
+        let narrators = books[indexPath.row].narrators.map { $0.name }
         
-        return books[indexPath.row].authors.map { $0.name }
+        return SearchResultCellModel(cover: coverData, title: bookTitle, authors: authors, narrators: narrators)
     }
     
-    func narrators(indexPath: IndexPath) -> [String] {
-//        if let narrators = books[indexPath.row].narrators {
-//            return narrators.map { $0.name }
-//        }
-//
-//        return nil
-        
-        return books[indexPath.row].narrators.map { $0.name }
-    }
-    
-    func cover(indexPath: IndexPath) -> Data? {
+    private func cover(indexPath: IndexPath) -> Data? {
         var data: Data?
         if let urlString = books[indexPath.row].cover?.url,
             let url = URL(string: urlString) {
@@ -92,8 +102,6 @@ class SearchResultsPresenter: ViewPresenterProtocol {
         
         return data
     }
-    
-    
 }
 
 extension SearchResultsPresenter: SearchResultsPresenterProtocol {
@@ -111,8 +119,8 @@ extension SearchResultsPresenter: SearchResultsPresenterProtocol {
         
     }
     
-    func searchResultFailure(errorCode: Int) {
-        view?.getQueryFailure(error: "An error occured fetching results")
+    func searchResultFailure(errorCode: SearchResultError) {
+        view?.getQueryFailure(error: errorCode.rawValue)
     }
     
     

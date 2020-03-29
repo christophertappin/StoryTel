@@ -13,6 +13,9 @@ enum StorytelAPI {
     static let host = "api.storytel.net"
 }
 
+/**
+ An HTTP request
+ */
 protocol Request {
     associatedtype ResponseType: Decodable
     
@@ -21,6 +24,9 @@ protocol Request {
     func response(data: Data) -> ResponseType?
 }
 
+/**
+ A REST request
+ */
 protocol RestRequest: Request {
     
     var path: String { get }
