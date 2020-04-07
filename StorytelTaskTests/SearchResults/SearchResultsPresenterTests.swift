@@ -12,6 +12,8 @@ import XCTest
 class SearchResultsPresenterTests: XCTestCase {
     
     class InteractorMock: SearchResultsInteractorProtocol {
+        var hasNextPage: Bool = false
+
         var presenter: SearchResultsPresenterProtocol?
         
         var images: [String: Data] = [:]
@@ -72,7 +74,7 @@ class SearchResultsPresenterTests: XCTestCase {
             BookItem(title: "firstBook", authors: [], narrators: [], cover: nil),
             BookItem(title: "secondBook", authors: [], narrators: [], cover: nil)]
         
-        XCTAssertEqual(searchResultsPresenter.bookTitle(indexPath: IndexPath(row: 1, section: 0)), searchResultsPresenter.books[1].title)
+        XCTAssertEqual(searchResultsPresenter.cellData(indexPath: IndexPath(row: 1, section: 0)).title, searchResultsPresenter.books[1].title)
     }
     
     func testCoverForIndexPath() {
@@ -90,7 +92,7 @@ class SearchResultsPresenterTests: XCTestCase {
             BookItem(title: "firstBook", authors: [], narrators: [], cover: Cover(url: url1, width: 10, height: 10)),
             BookItem(title: "secondBook", authors: [], narrators: [], cover: Cover(url: url2, width: 10, height: 10))]
         
-        XCTAssertEqual(searchResultsPresenter.cover(indexPath: IndexPath(row: 1, section: 0)), cover2)
+        XCTAssertEqual(searchResultsPresenter.cellData(indexPath: IndexPath(row: 1, section: 0)).cover, cover2)
     }
     
     func testNumberOfRowsInSection() {
@@ -110,7 +112,7 @@ class SearchResultsPresenterTests: XCTestCase {
             BookItem(title: "firstBook", authors: [Author(id: "id1", name: "name1")], narrators: [], cover: nil),
             BookItem(title: "secondBook", authors: [], narrators: [], cover: nil)]
         
-        let authors = searchResultsPresenter.authors(indexPath: IndexPath(row: 0, section:0))
+        let authors = searchResultsPresenter.cellData(indexPath: IndexPath(row: 0, section:0)).authors
         
         XCTAssertEqual(authors.count, 1)
         XCTAssertEqual(authors, ["name1"])
@@ -123,7 +125,7 @@ class SearchResultsPresenterTests: XCTestCase {
             BookItem(title: "firstBook", authors: [], narrators: [], cover: nil),
             BookItem(title: "secondBook", authors: [], narrators: [Narrator(id: "id1", name: "narrator")], cover: nil)]
         
-        let narrators = searchResultsPresenter.narrators(indexPath: IndexPath(row: 1, section:0))
+        let narrators = searchResultsPresenter.cellData(indexPath: IndexPath(row: 1, section: 0)).narrators
         
         XCTAssertEqual(narrators.count, 1)
         XCTAssertEqual(narrators, ["narrator"])
